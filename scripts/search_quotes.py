@@ -1,4 +1,4 @@
-from connect import mongo_connect, cache
+from connect import mongo_connect, connect_redis
 from models import Quotes, Authors
 from mongoengine.queryset.visitor import Q
 import re
@@ -139,5 +139,6 @@ def main():
 
 
 if __name__ == "__main__":
+    cache = connect_redis()
     mongo_connect()
     main()

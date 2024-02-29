@@ -1,7 +1,6 @@
-from connect import mongo_connect
+from connect import mongo_connect, connect_rabbitmq
 from models import Contacts
 from faker import Faker
-import pika
 import json
 
 
@@ -24,10 +23,12 @@ def create_contacts(n, rabbitmq_channel, queue_name):
 if __name__ == "__main__":
     mongo_connect()
 
-    credentials = pika.PlainCredentials("guest", "guest")
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host="127.0.0.1", port=5672, credentials=credentials)
-    )
+    # Виніс підключення брокера в модуль connect
+    # credentials = pika.PlainCredentials("guest", "guest")
+    # connection = pika.BlockingConnection(
+    #     pika.ConnectionParameters(host="127.0.0.1", port=5672, credentials=credentials)
+    # )
+    connection = connect_rabbitmq()
     channel = connection.channel()
 
     queue_name = "contacts_queue"

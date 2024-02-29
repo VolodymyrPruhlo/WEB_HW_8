@@ -2,9 +2,20 @@ from mongoengine import connect
 import configparser
 import os
 import redis
+import pika
 
 
-cache = redis.Redis(host="localhost", port=6379, db=0)
+def connect_rabbitmq():
+    credentials = pika.PlainCredentials("guest", "guest")
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host="127.0.0.1", port=5672, credentials=credentials)
+    )
+    return connection
+
+
+def connect_redis():
+    cache = redis.Redis(host="localhost", port=6379, db=0)
+    return cache
 
 
 def mongo_connect():

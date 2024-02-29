@@ -1,6 +1,5 @@
-from connect import mongo_connect
+from connect import mongo_connect, connect_rabbitmq
 from models import Contacts
-import pika
 import json
 import sys
 
@@ -20,10 +19,12 @@ def update_contact(contact_id):
 
 
 def main():
-    credentials = pika.PlainCredentials("guest", "guest")
-    connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host="127.0.0.1", port=5672, credentials=credentials)
-    )
+    # Виніс підключення брокера в модуль connect
+    # credentials = pika.PlainCredentials("guest", "guest")
+    # connection = pika.BlockingConnection(
+    #     pika.ConnectionParameters(host="127.0.0.1", port=5672, credentials=credentials)
+    # )
+    connection = connect_rabbitmq()
     channel = connection.channel()
 
     channel.queue_declare(queue="contacts_queue")
